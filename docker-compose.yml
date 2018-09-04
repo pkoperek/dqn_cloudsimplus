@@ -1,0 +1,16 @@
+version: '3'
+services:
+  cloudsimplus-gateway: 
+    ports:
+      - '25333:25333'
+    image: cloudsimplus-gateway:latest
+
+  manager:
+    image: dqn-manager:latest
+    build: 
+      context: .
+
+    depends_on:
+      - cloudsimplus-gateway
+    stdin_open: true
+    tty: true

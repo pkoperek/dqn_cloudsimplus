@@ -1,0 +1,5 @@
+.direnv
+Dockerfile
+docker-compose.yml
+.git*
+.envrc
