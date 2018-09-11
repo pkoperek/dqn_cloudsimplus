@@ -1,10 +1,10 @@
 version: '3'
 services:
   gateway: 
-    image: cloudsimplus-gateway:latest
+    image: pkoperek/cloudsimplus-gateway:latest
   
   manager:
-    image: dqn-manager:latest
+    image: pkoperek/dqn-manager:latest
     build: 
       context: .
     depends_on:
