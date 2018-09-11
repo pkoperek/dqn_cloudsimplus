@@ -1,7 +1,7 @@
 version: '3'
 services:
   gateway: 
-    image: cloudsimplusgateway:latest
+    image: cloudsimplus-gateway:latest
   
   manager:
     image: dqn-manager:latest
