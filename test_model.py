@@ -46,13 +46,10 @@ class DQN(nn.Module):
 
     def __init__(self):
         super(DQN, self).__init__()
-        # output: 16 channels 898
         self.conv1 = nn.Conv1d(5, 16, kernel_size=5, stride=2)
         self.bn1 = nn.BatchNorm1d(16)
-        # output: 32 channels 447 each
         self.conv2 = nn.Conv1d(16, 32, kernel_size=5, stride=2)
         self.bn2 = nn.BatchNorm1d(32)
-        # output: 32 channels 222 (rounded from 221,5)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=5, stride=2)
         self.bn3 = nn.BatchNorm1d(32)
         self.head = nn.Linear(32 * 222, 2)
@@ -68,7 +65,6 @@ class DQN(nn.Module):
 def get_measurements():
     measurements = env.render(mode='array')
     measurements = torch.tensor(measurements)
-    # and add a batch dimension (BCHW)
     measurements = measurements.unsqueeze(0)
 
     return measurements
