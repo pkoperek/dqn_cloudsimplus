@@ -105,7 +105,7 @@ def select_action(state):
         with torch.no_grad():
             return policy_net(state).max(1)[1].view(1, 1)
     else:
-        return torch.tensor([[random.randrange(2)]],
+        return torch.tensor([[random.randrange(3)]],
                             device=device,
                             dtype=torch.long)
 

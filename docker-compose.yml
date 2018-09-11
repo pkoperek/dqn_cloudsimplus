@@ -1,16 +1,14 @@
 version: '3'
 services:
-  cloudsimplus-gateway: 
-    ports:
-      - '25333:25333'
-    image: cloudsimplus-gateway:latest
-
+  gateway: 
+    image: cloudsimplusgateway:latest
+  
   manager:
     image: dqn-manager:latest
     build: 
       context: .
-
     depends_on:
-      - cloudsimplus-gateway
-    stdin_open: true
-    tty: true
+      - gateway
+    environment:
+      - CLOUDSIM_GATEWAY_HOST=gateway
+    command: ./wait-for gateway:25333 -- python test_dcnull.py
