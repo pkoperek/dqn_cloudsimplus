@@ -20,7 +20,7 @@ RUN apt-get update \
         /usr/share/doc-base
 
 COPY test* /mgr/
-COPY wait-for /mgr/
+COPY entrypoint.sh /
 
 WORKDIR /mgr
-CMD ["sleep", "10", "&&", "python", "test_model.py"]
+ENTRYPOINT ["/entrypoint.sh"]
