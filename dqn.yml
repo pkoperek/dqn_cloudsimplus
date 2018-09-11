@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: dqn-manager-deployment
   labels:
@@ -18,6 +18,7 @@ spec:
       - name: manager
         image: pkoperek/dqn-manager:latest
         imagePullPolicy: Always
+      restartPolicy: Never
 
 ---
 kind: Service
