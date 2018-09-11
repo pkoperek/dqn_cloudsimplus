@@ -11,4 +11,4 @@ services:
       - gateway
     environment:
       - CLOUDSIM_GATEWAY_HOST=gateway
-    command: ./wait-for gateway:25333 -- python test_dcnull.py
+    command: ./wait-for gateway:25333 -- python test_model.py
