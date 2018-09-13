@@ -1,23 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: dqn-manager-deployment
-  labels:
-    app: dqn-manager
+  name: dqn-manager-job
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: dqn-manager
   template:
-    metadata:
-      labels:
-        app: dqn-manager
     spec:
       containers:
       - name: manager
         image: pkoperek/dqn-manager:latest
         imagePullPolicy: Always
+        env:
+        - name: CLOUDSIM_GATEWAY_HOST
+          value: gateway-service
+        - name: TEST_CASE
+          value: model
       restartPolicy: Never
 
 ---
