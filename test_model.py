@@ -157,23 +157,36 @@ for i_episode in range(num_episodes):
     print("Episode: " + str(i_episode))
 
     total_reward = 0
-    # Initialize the environment and state
+    # Initialize the environment and state - restart the simulation
     env.reset()
     last_measurements = get_measurements()
     current_measurements = get_measurements()
     state = current_measurements - last_measurements
+
+    # Run the simulation until we are 'done'
     for t in count():
+        print("Iteration: " + str(t))
         # Select and perform an action
         action = select_action(state)
-        print("Executing action: " + str(action))
         _, reward, done, _ = env.step(action.item())
         total_reward += reward
-        print("Reward for action: " + str(reward))
+        print("Reward for action: " + str(reward) + " act: " + str(action))
         reward = torch.tensor([reward], device=device)
 
         # Observe new state
         last_measurements = current_measurements
         current_measurements = get_measurements()
+
+        number_of_vms = current_measurements[0][0][-1].item()
+        a = action[0][0].item()
+
+        print("LOG e it vm act: {} {} {} {}".format(
+            str(i_episode),
+            str(t),
+            str(number_of_vms),
+            str(a),
+        ))
+
         if not done:
             next_state = current_measurements - last_measurements
         else:
