@@ -1,3 +1,6 @@
+# code based on
+# https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
+
 import gym
 import gym_cloudsimplus
 import math
@@ -52,7 +55,7 @@ class DQN(nn.Module):
         self.bn2 = nn.BatchNorm1d(32)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=5, stride=2)
         self.bn3 = nn.BatchNorm1d(32)
-        self.head = nn.Linear(32 * 222, 2)
+        self.head = nn.Linear(32 * 222, 3)
 
     def forward(self, x):
         print("Network input: " + str(x.size()))
@@ -111,7 +114,9 @@ episode_durations = []
 
 def optimize_model():
     if len(memory) < BATCH_SIZE:
+        # we want to have at least BATCH_SIZE elements in the memory
         return
+
     transitions = memory.sample(BATCH_SIZE)
     # Transpose the batch (see http://stackoverflow.com/a/19343/3343043 for
     # detailed explanation).
@@ -133,7 +138,8 @@ def optimize_model():
 
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken
-    state_action_values = policy_net(state_batch).gather(1, action_batch)
+    states = policy_net(state_batch)
+    state_action_values = states.gather(1, action_batch)
 
     # Compute V(s_{t+1}) for all next states.
     next_state_values = torch.zeros(BATCH_SIZE, device=device)
