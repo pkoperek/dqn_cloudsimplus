@@ -156,7 +156,9 @@ def optimize_model():
     expected_state_action_values = (next_state_values * GAMMA) + reward_batch
 
     # Compute Huber loss
-    loss = F.smooth_l1_loss(state_action_values, expected_state_action_values.unsqueeze(1))
+    loss = F.smooth_l1_loss(
+        state_action_values,
+        expected_state_action_values.unsqueeze(1))
 
     # Optimize the model
     optimizer.zero_grad()
@@ -228,5 +230,5 @@ print('Saving the result of training')
 
 torch.save(policy_net, storage_path + '/policy_net_full.dump')
 torch.save(target_net, storage_path + '/target_net_full.dump')
-torch.save(policy_net.state_dict(), storage_path + '/target_net_state.dump')
+torch.save(policy_net.state_dict(), storage_path + '/policy_net_state.dump')
 torch.save(target_net.state_dict(), storage_path + '/target_net_state.dump')
