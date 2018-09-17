@@ -4,6 +4,7 @@
 import gym
 import gym_cloudsimplus
 import math
+import os
 import random
 from collections import namedtuple
 from itertools import count
@@ -22,6 +23,17 @@ device = "cpu"
 
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
+
+
+storage_path = os.getenv('STORAGE_PATH', '/storage')
+episodes_cnt = int(os.getenv('EPISODES_CNT', '1'))
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', '128'))
+
+GAMMA = 0.999
+EPS_START = 0.9
+EPS_END = 0.05
+EPS_DECAY = 200
+TARGET_UPDATE = 10
 
 
 class ReplayMemory(object):
@@ -74,13 +86,6 @@ def get_measurements():
 
 
 env.reset()
-
-BATCH_SIZE = 128
-GAMMA = 0.999
-EPS_START = 0.9
-EPS_END = 0.05
-EPS_DECAY = 200
-TARGET_UPDATE = 10
 
 policy_net = DQN().to(device)
 target_net = DQN().to(device)
@@ -139,6 +144,9 @@ def optimize_model():
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken
     states = policy_net(state_batch)
+
+    print("States size: " + str(states.size()))
+
     state_action_values = states.gather(1, action_batch)
 
     # Compute V(s_{t+1}) for all next states.
@@ -158,8 +166,7 @@ def optimize_model():
     optimizer.step()
 
 
-num_episodes = 50
-for i_episode in range(num_episodes):
+for i_episode in range(episodes_cnt):
     print("Episode: " + str(i_episode))
 
     total_reward = 0
@@ -216,3 +223,10 @@ for i_episode in range(num_episodes):
 
 print('Complete')
 env.close()
+
+print('Saving the result of training')
+
+torch.save(policy_net, storage_path + '/policy_net_full.dump')
+torch.save(target_net, storage_path + '/target_net_full.dump')
+torch.save(policy_net.state_dict(), storage_path + '/target_net_state.dump')
+torch.save(target_net.state_dict(), storage_path + '/target_net_state.dump')
