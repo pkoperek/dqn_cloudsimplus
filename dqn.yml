@@ -9,11 +9,21 @@ spec:
       - name: manager
         image: pkoperek/dqn-manager:latest
         imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /storage
+            name: model-storage
         env:
         - name: CLOUDSIM_GATEWAY_HOST
           value: gateway-service
         - name: TEST_CASE
           value: model
+        - name: EPISODES_CNT
+          value: 1
+      volumes:
+      - name: model-storage
+        hostPath: 
+          path: /tmp/model-storage
+          type: Directory
       restartPolicy: Never
 
 ---
@@ -51,3 +61,6 @@ spec:
       - name: cloudsimplus-gateway
         image: pkoperek/cloudsimplus-gateway:latest
         imagePullPolicy: Always
+        env:
+        - name: TEST_FILE
+          value: KTH-SP2-1996-2.1-cln_50.swf
