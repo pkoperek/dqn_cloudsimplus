@@ -18,7 +18,7 @@ spec:
         - name: TEST_CASE
           value: model
         - name: EPISODES_CNT
-          value: 4
+          value: '4'
       volumes:
       - name: model-storage
         hostPath: 
