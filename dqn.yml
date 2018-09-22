@@ -18,7 +18,7 @@ spec:
         - name: TEST_CASE
           value: model
         - name: EPISODES_CNT
-          value: '4'
+          value: '25'
       volumes:
       - name: model-storage
         hostPath: 
@@ -63,4 +63,4 @@ spec:
         imagePullPolicy: Always
         env:
         - name: TEST_FILE
-          value: KTH-SP2-1996-2.1-cln_250.swf
+          value: KTH-SP2-1996-2.1-cln.swf
