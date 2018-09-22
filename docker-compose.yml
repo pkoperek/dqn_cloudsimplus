@@ -3,7 +3,7 @@ services:
   gateway: 
     image: pkoperek/cloudsimplus-gateway:latest
     environment:
-      - TEST_FILE=KTH-SP2-1996-2.1-cln_50.swf
+      - TEST_FILE=KTH-SP2-1996-2.1-cln.swf
     ports:
       - 25333:25333
   
@@ -16,7 +16,7 @@ services:
     environment:
       - CLOUDSIM_GATEWAY_HOST=gateway
       - TEST_CASE=model
-      - BATCH_SIZE=4
+      - BATCH_SIZE=128
         #- TEST_CASE=run
 
     command: ./wait-for gateway:25333 -- python test_model.py
