@@ -82,7 +82,7 @@ class DQN(nn.Module):
         self.head = nn.Linear(32 * 222, 3)
 
     def forward(self, x):
-        print("Network input: " + str(x.size()))
+        log.debug("Network input: " + str(x.size()))
         x = F.selu(self.bn1(self.conv1(x)))
         x = F.selu(self.bn2(self.conv2(x)))
         x = F.selu(self.bn3(self.conv3(x)))
@@ -238,7 +238,7 @@ for i_episode in range(episodes_cnt):
 log.debug('Complete')
 env.close()
 
-print('Saving the result of training')
+log.debug('Saving the result of training')
 
 torch.save(policy_net, storage_path + '/policy_net_full.dump')
 torch.save(target_net, storage_path + '/target_net_full.dump')
