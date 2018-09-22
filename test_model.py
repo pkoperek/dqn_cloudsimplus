@@ -13,6 +13,18 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+import logging
+
+log = logging.getLogger('manager')
+
+console = logging.StreamHandler()
+formatter = logging.Formatter(
+    '%(asctime)s | %(relativeCreated)20d | %(message)s')
+console.setFormatter(formatter)
+console.setLevel(logging.DEBUG)
+
+log.setLevel(logging.DEBUG)
+log.addHandler(console)
 
 env = gym.make('SingleDCAppEnv-v0').unwrapped
 
@@ -145,7 +157,7 @@ def optimize_model():
     # columns of actions taken
     states = policy_net(state_batch)
 
-    print("States size: " + str(states.size()))
+    log.debug("States size: " + str(states.size()))
 
     state_action_values = states.gather(1, action_batch)
 
@@ -169,7 +181,7 @@ def optimize_model():
 
 
 for i_episode in range(episodes_cnt):
-    print("Episode: " + str(i_episode))
+    log.debug("Episode: " + str(i_episode))
 
     total_reward = 0
     # Initialize the environment and state - restart the simulation
@@ -180,12 +192,12 @@ for i_episode in range(episodes_cnt):
 
     # Run the simulation until we are 'done'
     for t in count():
-        print("Iteration: " + str(t))
+        log.debug("Iteration: " + str(t))
         # Select and perform an action
         action = select_action(state)
         _, reward, done, _ = env.step(action.item())
         total_reward += reward
-        print("Reward for action: " + str(reward) + " act: " + str(action))
+        log.debug("Reward for action: " + str(reward) + " act: " + str(action))
         reward = torch.tensor([reward], device=device)
 
         # Observe new state
@@ -195,7 +207,7 @@ for i_episode in range(episodes_cnt):
         number_of_vms = current_measurements[0][0][-1].item()
         a = action[0][0].item()
 
-        print("LOG e it vm act: {} {} {} {}".format(
+        log.debug("LOG e it vm act: {} {} {} {}".format(
             str(i_episode),
             str(t),
             str(number_of_vms),
@@ -217,13 +229,13 @@ for i_episode in range(episodes_cnt):
         optimize_model()
         if done:
             episode_durations.append(t + 1)
-            print("Total reward: " + str(total_reward))
+            log.debug("Total reward: " + str(total_reward))
             break
     # Update the target network
     if i_episode % TARGET_UPDATE == 0:
         target_net.load_state_dict(policy_net.state_dict())
 
-print('Complete')
+log.debug('Complete')
 env.close()
 
 print('Saving the result of training')
