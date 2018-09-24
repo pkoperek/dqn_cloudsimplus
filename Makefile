@@ -1,4 +1,4 @@
-VERSION=0.5
+VERSION=0.6
 
 release:
 	docker build -t pkoperek/dqn-manager:latest -t pkoperek/dqn-manager:${VERSION} .
