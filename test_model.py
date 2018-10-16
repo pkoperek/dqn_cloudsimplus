@@ -83,9 +83,9 @@ class DQN(nn.Module):
 
     def forward(self, x):
         log.debug("Network input: " + str(x.size()))
-        x = F.selu(self.bn1(self.conv1(x)))
-        x = F.selu(self.bn2(self.conv2(x)))
-        x = F.selu(self.bn3(self.conv3(x)))
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
         return self.head(x.view(x.size(0), -1))
 
 

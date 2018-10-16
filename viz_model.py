@@ -3,6 +3,14 @@ from torch import nn
 from torchviz import make_dot
 import torch.nn.functional as F
 
+# To use this script install pytorchviz package from:
+# https://github.com/szagoruyko/pytorchviz
+#
+# pip install git+https://github.com/szagoruyko/pytorchviz
+#
+# Run with
+# python viz_model.py
+
 
 class DQN(nn.Module):
 
@@ -17,9 +25,9 @@ class DQN(nn.Module):
         self.head = nn.Linear(32 * 222, 3)
 
     def forward(self, x):
-        x = F.selu(self.bn1(self.conv1(x)))
-        x = F.selu(self.bn2(self.conv2(x)))
-        x = F.selu(self.bn3(self.conv3(x)))
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
         return self.head(x.view(x.size(0), -1))
 
 
