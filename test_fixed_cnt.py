@@ -13,8 +13,6 @@ import torch.nn.functional as F
 
 env = gym.make('SingleDCAppEnv-v0').unwrapped
 
-env.reset()
-
 total_reward = 0
 total_wait = 0
 # Initialize the environment and state - restart the simulation

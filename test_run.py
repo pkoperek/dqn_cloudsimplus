@@ -59,8 +59,6 @@ loaded_state_dict = torch.load(storage_path + '/policy_net_state.dump')
 policy_net = DQN().to(device)
 policy_net.load_state_dict(loaded_state_dict)
 
-env.reset()
-
 total_reward = 0
 total_wait = 0
 # Initialize the environment and state - restart the simulation
