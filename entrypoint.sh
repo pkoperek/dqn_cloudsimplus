@@ -1,8 +1,6 @@
 #!/bin/bash
 
-echo "Waiting for gateway to setup"
-sleep 10
 START_DATE=`date +%Y-%m-%dT%H:%M:%S`
-TEST_FILE=test_${TEST_CASE:-model}.py
-echo "Starting simulation: ${TEST_FILE} at ${START_DATE}"
-python ${TEST_FILE}
+echo "Starting simulation at ${START_DATE}"
+
+wait-for-it -s database:5432 -- python3 infinity/deamon.py

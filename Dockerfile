@@ -1,13 +1,13 @@
-FROM python:2.7
+FROM python:3.6
 
 MAINTAINER pkoperek@gmail.com
 
 RUN mkdir -p /mgr
-RUN pip install --no-cache-dir gym torch torchvision ipython
-RUN pip install --no-cache-dir -e git+https://github.com/pkoperek/gym_cloudsimplus#egg=gym_cloudsimplus
+RUN pip3 install --no-cache-dir gym torch torchvision ipython psycopg2-binary
+RUN pip3 install --no-cache-dir -e git+https://github.com/pkoperek/gym_cloudsimplus#egg=gym_cloudsimplus
 
 RUN apt-get update \
-    && apt-get install -y netcat \
+    && apt-get install -y wait-for-it \
     && apt-get purge --auto-remove -yqq \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
@@ -19,8 +19,8 @@ RUN apt-get update \
         /usr/share/doc \
         /usr/share/doc-base
 
-COPY test* /mgr/
+COPY infinity /mgr/infinity
 COPY entrypoint.sh /
 
 WORKDIR /mgr
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/entrypoint.sh"]
