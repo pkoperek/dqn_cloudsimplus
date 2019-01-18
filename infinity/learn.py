@@ -175,6 +175,7 @@ class ModelTrainer(object):
             current_measurements = self._get_measurements()
             state = current_measurements - last_measurements
 
+            log.debug(f'Input size: {state.size()}')
             log.debug('Training: ' + str(simulation_start) + ' till ' +
                       str(simulation_end))
 
